@@ -9,24 +9,23 @@ public:
     }
 
     Rational(int numerator, int denominator) {
-        m_num = numerator;
-        m_denom = denominator;
-        int nod = NOD(m_num, m_denom);
-        m_num = m_num / nod;
-        m_denom = m_denom / nod;
-        if (m_denom < 0) {
-            if (m_num < 0) {
-                m_denom = abs(m_denom);
-                m_num = abs(m_num);
+        if (denominator < 0) {
+            if (numerator < 0) {
+                denominator = abs(denominator);
+                numerator = abs(numerator);
             } else {
-                m_denom = abs(m_denom);
-                m_num = m_num - 2 * m_num;
+                denominator = abs(denominator);
+                numerator = numerator - 2 * numerator;
             }
         }
-        if (m_num == 0) {
-            m_num = 0;
-            m_denom = 1;
+        if (numerator == 0) {
+            denominator = 1;
         }
+        // m_num = numerator;
+        // m_denom = denominator;
+        int nod = Nod(abs(numerator), abs(denominator));
+        m_num = numerator / nod;
+        m_denom = denominator / nod;
     }
 
     int Numerator() const {
@@ -40,15 +39,17 @@ public:
 private:
     int m_num;
     int m_denom;
-    int NOD (int n, int d) {
-        while (n > 0 && d > 0) {
-            if (n > d) {
-              n = n & d;  
-            } else {
-              d = d % n;
+
+   int Nod(int a, int b) { 
+        while (a > 0 && b > 0) {
+            if (a > b) {
+                a %= b;
             }
-        }
-        return n + d;
+            else {
+                b %= a;
+            }
+        } 
+        return a + b;
     }
 };
 
